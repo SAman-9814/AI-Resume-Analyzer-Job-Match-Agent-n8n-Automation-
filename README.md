@@ -6,6 +6,19 @@ The backend infrastructure is 100% powered by an automated **n8n** visual workfl
 
 ---
 
+## 📸 Project Screenshots
+
+### React User Interface
+![AI Resume Analyzer Landing Page](./screenshots/ui-landing.png)
+
+### Comprehensive ATS Results Dashboard
+![AI Resume Analyzer Results Dashboard](./screenshots/ui-results.png)
+
+### Automated n8n Backend Architecture
+![n8n Workflow Canvas with MongoDB](./screenshots/n8n-workflow.png)
+
+---
+
 ## ✨ Key Features
 
 ### 🎨 Premium User Interface
@@ -41,6 +54,7 @@ The backend infrastructure is 100% powered by an automated **n8n** visual workfl
 - **PDF Extraction:** PDF.js (`pdfjs-dist`)
 - **HTTP Client:** Axios
 - **Backend / Orchestration:** n8n Cloud
+- **Database:** MongoDB
 - **AI Engine:** Google Gemini API
 - **Communication APIs:** Gmail API, Twilio API
 
@@ -54,6 +68,7 @@ The backend infrastructure is 100% powered by an automated **n8n** visual workfl
 4. The n8n workflow receives the payload and passes the data into the **Gemini AI Node**. The prompt strictly instructs the AI to act as a senior HR recruiter and output only pure JSON.
 5. A custom **JavaScript Code Node** intercepts the AI's response, cleans any markdown formatting, and ensures it is perfectly parsed JSON.
 6. The n8n workflow branches out:
+   - Triggers the **MongoDB Node** (`Insert documents`) to save the candidate's analysis data to your database permanently.
    - Triggers the **Gmail Node** to email the candidate.
    - Triggers the **Twilio Node** to WhatsApp the candidate.
 7. Finally, the **Respond to Webhook Node** fires, sending the structured JSON analysis back to the awaiting React app.
@@ -124,6 +139,7 @@ The backend infrastructure is 100% powered by an automated **n8n** visual workfl
        }
      };
      ```
+   - **MongoDB Node**: Action `Insert`. Connect to your MongoDB instance and save `$json` to a collection (e.g., `candidates`).
    - **Gmail Node**: Action `Send an Email`. Set "To" as `{{$json.candidateEmail}}`. *(Pro-tip: Under "Additional Fields", add a "Sender Name" like "AI Recruitment Team")*.
    - **Twilio Node**: Action `Send a WhatsApp Message`. Connect to your Twilio Sandbox.
    - **Respond to Webhook Node**: Set Respond With to `JSON`. Pass in the output of the Code Node.
